@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      | 
+|    \\/     M anipulation  |                                                 |
+|*---------------------------------------------------------------------------*|
+|  File created by CFD support s.r.o., Wed Jan 25 11:27:58 2017               |
+|                    http://www.cdfsupport.com                                |
+\*---------------------------------------------------------------------------*/
+
+/****************************************************************************/
+/****************************************************************************/
+/********************FILE TO EXPLAIN HOW TO USE THE CODE ********************/
+/****************************************************************************/
+/****************************************************************************/
+
+To use the case first the mesh has to be read. Type gmshToFoam meshName. Then remember to go to constant/polymesh/boundary and correct the empty patches since they dont get converted. If needed correct also the boundary conditions. 
+
+
+RUN THE FULL MODEL (NON-PARAMETRIC) --> classic controlDict, and OF settings. No need to use any particular dictionary. Can also run in 					parallel. (Default use pimpleFoam)
+
+RUN THE FULL MODEL (PARAMTERIC)     --> usual settings from controlDict. Setup the simulation with constant/parameterDict and follow the 					instructions. Parallel runs are    not possible for multiple parameters. Run the simulation with
+					the command pimpleParametric 
+                                        
+
+POD basis construction              --> Important to make sure that constant/parameterDict has the correct number of entries. If there are 					4 viscosities the code will loop 4 times, and it will take from U1 to U4 in the snapshots matrix.					Be sure that the correct amount of parameter is specified. If there is only 1 parameter, the code 					will use U as the field. the second important dictionary is system/podDict. There the number of 					modes is specified.To execute the command type POD in the terminal
+
+
+Offline computation                 --> It creates the ROM coefficients. Dictionary system/podDict controls the chosen stabilization                        					method. Based on that it will create the coefficients. Be careful because different methods have 					different coefficients and the offline computation needs to be redone. To execute the code type 					offline.                                
+
+
+Online computation                  --> effectively solves the new system and saves the solution. The command is galerkinProjection.
+                                        It is important to name correctly the field. If the name is not changed, it will overwrite the 						datas. All the time settings, simulation duration, dt and saving times are controlled by the 						controlDict directly. sytem/NewtonSolverDict controls the settings of the newton solver. Refer to 					the comments there to understand what it does. It is very important to be sure that the initial 					condition is chosen at the right time and on the right field. That can be controlled in the 						sytem/NewtonSolverDict.
+
+Error Computation                   --> system/ErrorDict. Needed if you want to plot the L2 relative error as a postProcessing. Type error 					to execute. It is also possible to compute the difference of two fields and  store                                   					them as a vector/scalar field to then look into paraview. The settings follow the system/ErrorDict 					dictionary. The full model chosen will be subtracted to the reduced models selected.                               					The command to execute is fieldDifference.
+
+
+Cl and Cd plot                      --> in case also cl and cd can be computed, using the forceCoeffsDict. Standard OpenFOAM way.
+
+
+EXTRA				    --> system/debugDict activates debug prints and helper in case something does not work 
+
