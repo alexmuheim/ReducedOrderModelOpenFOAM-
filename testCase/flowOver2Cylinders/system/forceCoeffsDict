@@ -1,0 +1,291 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  3.0.x                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+|*---------------------------------------------------------------------------*|
+|  File created by CFD support s.r.o., Wed Jan 25 11:27:58 2017               |
+|                    http://www.cdfsupport.com                                |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     3.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      forceCoeffsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//change readfields_custom with the wanted fields to read, then write the correct fields in the forceCoeffs and then, after uncommenting the forceCoeffsDict in controlDict, run solver -postProcess
+readFields_custom
+{
+    type                readFields;
+    libs                ("libfieldFunctionObjects.so");  // Changed library
+    functionObjectLibs  ("libfieldFunctionObjects.so");
+    fields              (URomGalerkin28Modes pRomGalerkin28Modes
+                         URomGalerkinPressure28Modes pRomGalerkinPressure28Modes
+                         URomPPE28Modes pRomPPE28Modes
+                        URomPPE45Modes pRomPPE45Modes
+                        URomPPE60Modes pRomPPE60Modes 
+                            );
+    
+    // Ensure it runs first
+    timeStart 100;
+    timeEnd   200;
+    executeControl writeTime;
+    //executeInterval 1;
+    //writeControl    onEnd;
+    
+}
+
+forceCoeffsFOM
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    writeAtStart    no;
+    timeStart 100;
+    timeEnd   200;
+    writeControl    writeTime;
+
+    patches         (cylinder1);
+
+    // Optional entries
+
+    // Field names
+    U      U;
+    p      p;
+    rho     rhoInf;
+    rhoInf  1.0;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 1 0);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 0 1);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         1;
+
+    // Reference length [m]
+    lRef            1;
+
+    // Reference area [m2]
+    Aref            1;
+}
+
+
+forceCoeffsGalerkin
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    writeControl    writeTime;
+    timeStart 100;
+    timeEnd   200;
+
+    patches         (cylinder1);
+
+    // Optional entries
+
+    // Field names
+    U      URomGalerkin28Modes;
+    p      pRomGalerkin28Modes;
+    rho     rhoInf;
+    rhoInf  1.0;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 1 0);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 0 1);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         1;
+
+    // Reference length [m]
+    lRef            1;
+
+    // Reference area [m2]
+    Aref            1;
+}
+
+
+forceCoeffsGalerkinPressure
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    writeControl    writeTime;
+    timeStart 100;
+    timeEnd   200;
+    patches         (cylinder1);
+
+    // Optional entries
+
+    // Field names
+    U      URomGalerkinPressure28Modes;
+    p      pRomGalerkinPressure28Modes;
+    rho     rhoInf;
+    rhoInf  1.0;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 1 0);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 0 1);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         1;
+
+    // Reference length [m]
+    lRef            1;
+
+    // Reference area [m2]
+    Aref            1;
+}
+
+
+forceCoeffsPPE
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    writeControl    writeTime;
+    timeStart 100;
+    timeEnd   200;
+    patches         (cylinder1);
+
+    // Optional entries
+
+    // Field names
+    U      URomPPE28Modes;
+    p      pRomPPE28Modes;
+    rho     rhoInf;
+    rhoInf  1.0;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 1 0);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 0 1);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         1;
+
+    // Reference length [m]
+    lRef            1;
+
+    // Reference area [m2]
+    Aref            1;
+}
+
+forceCoeffsPPE2
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    writeControl    writeTime;
+    timeStart 100;
+    timeEnd   200;
+    patches         (cylinder1);
+
+    // Optional entries
+
+    // Field names
+    U      URomPPE45Modes;
+    p      pRomPPE45Modes;
+    rho     rhoInf;
+    rhoInf  1.0;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 1 0);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 0 1);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         1;
+
+    // Reference length [m]
+    lRef            1;
+
+    // Reference area [m2]
+    Aref            1;
+}
+
+forceCoeffsPPE3
+{
+    // Mandatory entries
+    type            forceCoeffs;
+    libs            ("libforces.so");
+    writeControl    writeTime;
+    timeStart 100;
+    timeEnd   200;
+    patches         (cylinder1);
+
+    // Optional entries
+
+    // Field names
+    U      URomPPE60Modes;
+    p      pRomPPE60Modes;
+    rho     rhoInf;
+    rhoInf  1.0;
+
+    // Centre of rotation for moment calculations
+    CofR            (0 0 0);
+
+    // Lift direction
+    liftDir         (0 1 0);
+
+    // Drag direction
+    dragDir         (1 0 0);
+
+    // Pitch axis
+    pitchAxis       (0 0 1);
+
+    // Freestream velocity magnitude [m/s]
+    magUInf         1;
+
+    // Reference length [m]
+    lRef            1;
+
+    // Reference area [m2]
+    Aref            1;
+}
+
+
+
+// ************************************************************************* //

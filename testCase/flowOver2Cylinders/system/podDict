@@ -1,0 +1,37 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      podDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//write Options for saving Snapshots --> default is start and end of simulation. frequency of saving is controlled by writeInterval
+//here you can choose if you want a different time span to collect the snapshots. It can also be done via controlDict by adjusting startTime and endTime
+//startTime   190;
+//endTime     200;
+
+//desired number of modes for both U and p. Not yet implemented having two different modes, so always select the same 
+nModesU  28;
+nModesp   28;
+
+//possible stabilizations: "galerkin", "galerkinPressure", "PPE" 
+stabilization "PPE";
+
+//Choose the name of the Reduced velocity and pressure
+romNameU  "URom";
+romNameP  "pRom";
+
+// number of modes is chosen based on the selected number on top. This is just to print how many modes to have this amount of energy. Only to confirm
+threshold 0.9999;
+
+
+// ************************************************************************* //

@@ -1,0 +1,36 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      NewtonSolverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//timestep dt is contorlled by the controlDict. Also the start and end time of simulation. Also the saving times. 
+//relative tolerance
+tol          1e-5;
+
+//maximum number of iterations per timestep
+maxIter      20;
+
+//relaxation factor if needed
+relaxation  1; 
+
+//residual infos
+printInfo   false;
+
+//Choose the time folder where the initial condition for the ROM will be taken. 
+initialConditionTime  0;
+//choose the field from which to read the initial condition. It is particularly important in parametric cases.
+fieldU    U;
+fieldP    p;
+
+// ************************************************************************* //

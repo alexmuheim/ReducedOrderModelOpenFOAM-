@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM                                       |
+|  \\    /   O peration     | Version:  4.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      decomposeParDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/* numberOfSubdomains 6;
+
+method          scotch;      // use 'ptscotch' if your build supports it
+
+distributed     no;
+roots           ();
+
+scotchCoeffs
+{
+} */
+
+
+/* //second method
+numberOfSubdomains 6;
+
+method          simple;
+simpleCoeffs
+{
+    n       (2 3 1);    // split more in y; keep z=1 for 2D cases with 'empty'
+    delta   0.001;
+    order   xyz;
+}
+
+distributed     no;
+roots           ();
+ */
+
+ //third method
+numberOfSubdomains 10;
+method          simple;
+simpleCoeffs
+{
+    n       (2 5 1);          // don’t split the empty/extruded dir
+    delta   0.001;
+    order   xyz;
+}
+distributed     no;
+roots           ();
+
+
+// ************************************************************************* //

@@ -1,0 +1,28 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      errorDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//select the wanted full order model field to compute the L2 error
+FOMfieldU     U;
+FOMfieldP     p;
+
+//select the fields you want to plot the L2 error. you can have multiple fields at the same time. The resolution (amount of time folders to read from) is chosen 
+//based on controlDict settings
+ROMfieldU     (URomGalerkin10Modes  URomGalerkin28Modes);
+ROMfieldP     (pRomGalerkin10Modes pRomGalerkin28Modes );
+
+
+
+// ************************************************************************* //

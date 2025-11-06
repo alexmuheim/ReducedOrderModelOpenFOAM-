@@ -1,0 +1,25 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      parameterDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//parameter   "dirichlet";        --> dirichlet not implemented, only viscosity possible 
+parameter   "viscosity";
+
+patch       "inlet";            // if dirichlet is chosen, also select the patch that has to be changed (default is inlet) (not implemnted yet)
+Ud          ((1 0 0));          //not properly implemted yet (leave to be sure everything works)
+
+//nu          (0.005 0.00625 0.0075 0.00875 0.01); // 5 different reynolds number --> solution will be saved as U1 U2 U3 U4 U5. There will be a duplicate U that will be the last simulation in this case nu = 0.01
+nu          (0.0075 ); // Re = 125
+// ************************************************************************* //
