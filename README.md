@@ -1,43 +1,19 @@
-/*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  3.0.x                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      | 
-|    \\/     M anipulation  |                                                 |
-|*---------------------------------------------------------------------------*|
-|  File created by CFD support s.r.o., Wed Jan 25 11:27:58 2017               |
-|                    http://www.cdfsupport.com                                |
-\*---------------------------------------------------------------------------*/
+Reduced Order Model implementation for OpenFOAMv2312
 
-/****************************************************************************/
-/****************************************************************************/
-/********************FILE TO EXPLAIN HOW TO USE THE CODE ********************/
-/****************************************************************************/
-/****************************************************************************/
+To have more insights on how the code is used, refer to the READ_ME in the testCase folder.
+Content:
 
-To use the case first the mesh has to be read. Type gmshToFoam meshName. Then remember to go to constant/polymesh/boundary and correct the empty patches since they dont get converted. If needed correct also the boundary conditions. 
+pimpleParametric --> code to perform Full Order Model simulations for multiple viscosities. It automatically stores the fields with different names in the same OpenFOAM case folder.
+					 
+PODpost			 --> code to perform Proper Orthogonal Decomposition on pressure and velocity fields. 
 
+offlineComputation --> performs the offline coefficient computation. It computes the tensors that are stored in the offline stage with different methods.  
 
-RUN THE FULL MODEL (NON-PARAMETRIC) --> classic controlDict, and OF settings. No need to use any particular dictionary. Can also run in 					parallel. (Default use pimpleFoam)
+galerkinProjection --> online computation for the Reduced Order Model. Creates residuals for the different stabilization methods and solves the ODE system with the implemented Newton solver. 
+					   ResidualConstruction2eqs.H creates a DSL (Domain Specific Language) to automatically write the residuals in math form. 
+ 
+errorComputation --> performs L2 relative error calculation as postProcessing. 
+fieldDifference  --> computes the difference of 2 fields and stores them as a new field.
 
-RUN THE FULL MODEL (PARAMTERIC)     --> usual settings from controlDict. Setup the simulation with constant/parameterDict and follow the 					instructions. Parallel runs are    not possible for multiple parameters. Run the simulation with
-					the command pimpleParametric 
-                                        
-
-POD basis construction              --> Important to make sure that constant/parameterDict has the correct number of entries. If there are 					4 viscosities the code will loop 4 times, and it will take from U1 to U4 in the snapshots matrix.					Be sure that the correct amount of parameter is specified. If there is only 1 parameter, the code 					will use U as the field. the second important dictionary is system/podDict. There the number of 					modes is specified.To execute the command type POD in the terminal
-
-
-Offline computation                 --> It creates the ROM coefficients. Dictionary system/podDict controls the chosen stabilization                        					method. Based on that it will create the coefficients. Be careful because different methods have 					different coefficients and the offline computation needs to be redone. To execute the code type 					offline.                                
-
-
-Online computation                  --> effectively solves the new system and saves the solution. The command is galerkinProjection.
-                                        It is important to name correctly the field. If the name is not changed, it will overwrite the 						datas. All the time settings, simulation duration, dt and saving times are controlled by the 						controlDict directly. sytem/NewtonSolverDict controls the settings of the newton solver. Refer to 					the comments there to understand what it does. It is very important to be sure that the initial 					condition is chosen at the right time and on the right field. That can be controlled in the 						sytem/NewtonSolverDict.
-
-Error Computation                   --> system/ErrorDict. Needed if you want to plot the L2 relative error as a postProcessing. Type error 					to execute. It is also possible to compute the difference of two fields and  store                                   					them as a vector/scalar field to then look into paraview. The settings follow the system/ErrorDict 					dictionary. The full model chosen will be subtracted to the reduced models selected.                               					The command to execute is fieldDifference.
-
-
-Cl and Cd plot                      --> in case also cl and cd can be computed, using the forceCoeffsDict. Standard OpenFOAM way.
-
-
-EXTRA				    --> system/debugDict activates debug prints and helper in case something does not work 
-
+dictionaries --> all the relevant dictionaries needed to make the code work. They need to be placed in system apart for parameterDict which needs to be in constant. Look in testCase for more details.
+testCase --> example case and usage instruction for the ROM. 
