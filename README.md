@@ -16,4 +16,5 @@ errorComputation --> performs L2 relative error calculation as postProcessing.
 fieldDifference  --> computes the difference of 2 fields and stores them as a new field.
 
 dictionaries --> all the relevant dictionaries needed to make the code work. They need to be placed in system apart for parameterDict which needs to be in constant. Look in testCase for more details.
+
 testCase --> example case and usage instruction for the ROM. 
